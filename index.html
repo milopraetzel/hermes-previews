@@ -3,36 +3,352 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hermes Preview Studio — martagent.de</title>
+  <title>Martagent Preview Studio</title>
+  <meta name="description" content="Dauerhafte GitHub-Pages-Previews für Agenten-Interfaces, Automationsportale und Kundendemos von Martagent." />
+  <meta property="og:title" content="Martagent Preview Studio" />
+  <meta property="og:description" content="Client-safe Vorschauen für AI-Agent-Interfaces, Landingpages und Automationsdemos." />
+  <meta property="og:image" content="assets/thumb-ai-sdk-agents.png" />
   <style>
-    :root { color-scheme: light; --bg:#fbfbfb; --ink:#080808; --muted:#666; --line:#e8e8e8; --accent:#0ea5e9; }
-    *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 72% 8%,rgba(14,165,233,.18),transparent 28rem),linear-gradient(#fff,#f7f7f7);color:var(--ink)}
-    body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 75%)}
-    main{position:relative;width:min(1120px,calc(100% - 40px));margin:0 auto;padding:72px 0}
-    .eyebrow{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.76);backdrop-filter:blur(16px);font-size:13px;color:var(--muted)}
-    .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 26px var(--accent)}
-    h1{font-size:clamp(44px,8vw,108px);line-height:.92;letter-spacing:-.07em;margin:28px 0 18px;max-width:900px}
-    p{font-size:clamp(17px,2vw,21px);line-height:1.6;color:var(--muted);max-width:720px;margin:0 0 28px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:48px}
-    a.card{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:28px;padding:24px;background:rgba(255,255,255,.82);box-shadow:0 24px 70px rgba(0,0,0,.06);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
-    a.card:hover{transform:translateY(-4px);border-color:rgba(14,165,233,.45);box-shadow:0 28px 90px rgba(14,165,233,.14)}
-    .icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:#080808;color:#fff;margin-bottom:48px}
-    h2{font-size:24px;letter-spacing:-.04em;margin:0 0 10px}.card p{font-size:15px;margin:0}.meta{margin-top:24px;font-size:13px;color:#777}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:7px 10px;margin:4px 4px 0 0;background:#fff;font-size:12px;color:#555}
+    :root {
+      color-scheme: light;
+      --bg: #ffffff;
+      --ink: #06110f;
+      --muted: #64716d;
+      --faint: #66736f;
+      --line: rgba(6, 17, 15, .10);
+      --line-strong: rgba(6, 17, 15, .18);
+      --surface: rgba(255,255,255,.86);
+      --surface-solid: #ffffff;
+      --wash: #f4f8f7;
+      --green: #064e3b;
+      --green-2: #0f766e;
+      --blue: #0f5fff;
+      --cyan: #16c7d7;
+      --shadow: 0 28px 90px rgba(5, 42, 35, .08), 0 1px 0 rgba(255,255,255,.9) inset;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 78% 5%, rgba(22,199,215,.16), transparent 34rem),
+        radial-gradient(circle at 8% 35%, rgba(6,78,59,.08), transparent 28rem),
+        linear-gradient(180deg, #fff 0%, #fff 44%, #f7faf9 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(6,17,15,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6,17,15,.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,.7) 36%, transparent 78%);
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+    a { color: inherit; text-decoration: none; }
+    strong { color: var(--ink); font-weight: 650; }
+    .wrap { width: min(1180px, calc(100% - 44px)); margin: 0 auto; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(6,17,15,.08);
+      background: rgba(255,255,255,.75);
+      backdrop-filter: blur(18px) saturate(1.2);
+    }
+    .nav-inner { height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 720; letter-spacing: -.035em; }
+    .brand-mark {
+      width: 31px; height: 31px; border-radius: 10px; display: grid; place-items: center;
+      color: #fff; background: #06110f; position: relative; overflow: hidden; box-shadow: 0 12px 30px rgba(6,17,15,.18);
+    }
+    .brand-mark::after { content: ""; position: absolute; inset: -25%; background: repeating-linear-gradient(120deg, transparent 0 6px, rgba(22,199,215,.85) 6px 8px); opacity: .75; }
+    .brand-mark span { position: relative; z-index: 1; font-size: 13px; }
+    .nav-links { display: flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.72); }
+    .nav-links a { font-size: 13px; color: var(--muted); padding: 8px 12px; border-radius: 999px; transition: .18s ease; }
+    .nav-links a:hover { color: var(--ink); background: #f2f6f5; }
+    .repo-link { font-size: 13px; font-weight: 650; border: 1px solid var(--line); border-radius: 999px; padding: 9px 13px; background: #fff; box-shadow: 0 10px 26px rgba(6,17,15,.04); }
+
+    .hero { padding: 84px 0 40px; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; width: fit-content; border: 1px solid var(--line); border-radius: 999px; padding: 8px 11px; background: rgba(255,255,255,.82); color: var(--muted); font: 600 12px/1 var(--mono); letter-spacing: .02em; }
+    .pulse { width: 8px; height: 8px; border-radius: 999px; background: var(--cyan); box-shadow: 0 0 0 5px rgba(22,199,215,.14), 0 0 32px rgba(22,199,215,.8); }
+    h1 { margin: 24px 0 22px; max-width: 790px; font-size: clamp(50px, 8.2vw, 116px); line-height: .9; letter-spacing: -.075em; font-weight: 760; }
+    .lead { margin: 0; max-width: 710px; color: var(--muted); font-size: clamp(18px, 2vw, 22px); line-height: 1.55; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 0 17px; border-radius: 11px; font-size: 14px; font-weight: 700; transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--ink); color: #fff; box-shadow: 0 18px 45px rgba(6,17,15,.18); }
+    .btn-secondary { border: 1px solid var(--line); background: #fff; color: var(--ink); box-shadow: 0 10px 28px rgba(6,17,15,.05); }
+
+    .hero-panel {
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      padding: 18px;
+      background: rgba(255,255,255,.70);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-panel::before {
+      content: ""; position: absolute; inset: 18px; border-radius: 24px;
+      background: radial-gradient(circle at 72% 20%, rgba(22,199,215,.26), transparent 15rem), linear-gradient(135deg, #fafffe, #eef8f6);
+      z-index: 0;
+    }
+    .terminal-card { position: relative; z-index: 1; border: 1px solid rgba(6,17,15,.11); border-radius: 24px; background: #fff; padding: 20px; min-height: 356px; display: flex; flex-direction: column; justify-content: space-between; }
+    .terminal-top { display: flex; justify-content: space-between; gap: 16px; color: var(--faint); font: 600 12px var(--mono); }
+    .signal { display: inline-flex; gap: 6px; }
+    .signal span { width: 9px; height: 9px; border-radius: 99px; background: #d7dfdd; }
+    .signal span:nth-child(2) { background: #9be6dc; }
+    .orb { width: min(280px, 70%); aspect-ratio: 1; margin: 18px auto; border-radius: 50%; background: radial-gradient(circle, rgba(22,199,215,.92), rgba(15,95,255,.48) 42%, rgba(6,17,15,.96) 43%, #06110f 65%, transparent 66%); position: relative; overflow: hidden; box-shadow: inset 0 0 80px rgba(255,255,255,.18), 0 30px 70px rgba(6,17,15,.18); }
+    .orb::after { content: ""; position: absolute; inset: -20%; background: repeating-linear-gradient(100deg, transparent 0 5px, rgba(255,255,255,.75) 5px 7px); opacity: .38; transform: rotate(14deg); }
+    .mini-stack { border: 1px solid var(--line); border-radius: 18px; padding: 13px; background: rgba(255,255,255,.88); box-shadow: 0 18px 44px rgba(6,17,15,.08); }
+    .mini-stack strong { display: block; font-size: 14px; margin-bottom: 8px; }
+    .mini-row { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; color: var(--muted); font: 600 12px var(--mono); border-top: 1px solid rgba(6,17,15,.07); }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 46px 0 78px; }
+    .stat { border: 1px solid var(--line); border-radius: 20px; padding: 19px; background: rgba(255,255,255,.78); box-shadow: 0 16px 52px rgba(6,17,15,.04); }
+    .stat b { display: block; font-size: 28px; letter-spacing: -.06em; margin-bottom: 4px; }
+    .stat span { color: var(--muted); font-size: 13px; }
+
+    section { padding: 34px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+    .kicker { color: var(--green-2); font: 800 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
+    h2 { margin: 0; font-size: clamp(30px, 4vw, 52px); line-height: .98; letter-spacing: -.06em; }
+    .section-copy { max-width: 560px; color: var(--muted); line-height: 1.6; margin: 0; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter { border: 1px solid var(--line); border-radius: 999px; padding: 8px 11px; background: #fff; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .filter.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+    .featured-card { display: grid; grid-template-columns: 1.08fr .92fr; gap: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 34px; background: #fff; box-shadow: var(--shadow); }
+    .thumb { min-height: 430px; background: #eef4f3; position: relative; overflow: hidden; border-right: 1px solid var(--line); }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transform: scale(1.01); }
+    .thumb::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 -120px 100px rgba(6,17,15,.08); }
+    .featured-body { padding: clamp(26px, 4vw, 46px); display: flex; flex-direction: column; justify-content: space-between; gap: 34px; }
+    .status-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .badge { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; color: var(--muted); background: #fff; font: 700 12px var(--sans); }
+    .badge.live { color: #075b47; background: #effbf8; border-color: rgba(15,118,110,.18); }
+    .badge.live::before { content: ""; width: 7px; height: 7px; border-radius: 99px; background: #10b981; box-shadow: 0 0 18px rgba(16,185,129,.7); }
+    h3 { margin: 0; font-size: clamp(32px, 4.4vw, 58px); line-height: .96; letter-spacing: -.065em; }
+    .featured-body p { color: var(--muted); font-size: 16px; line-height: 1.65; margin: 16px 0 0; }
+    .meta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .meta-box { border: 1px solid rgba(6,17,15,.08); border-radius: 16px; padding: 13px; background: #fbfdfc; }
+    .meta-box small { display: block; color: var(--faint); font: 700 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+    .meta-box span { font-size: 14px; font-weight: 700; }
+
+    .library-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .library-card, .empty-card { border: 1px solid var(--line); border-radius: 24px; background: rgba(255,255,255,.82); padding: 20px; min-height: 176px; transition: .18s ease; }
+    .library-card:hover { transform: translateY(-2px); box-shadow: 0 22px 60px rgba(6,17,15,.07); }
+    .library-card .badge { margin-bottom: 30px; }
+    .library-card h4, .empty-card h4 { margin: 0 0 8px; font-size: 20px; letter-spacing: -.04em; }
+    .library-card p, .empty-card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
+    .empty-card { border-style: dashed; color: var(--muted); background: rgba(255,255,255,.42); }
+
+    .workflow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .step { border: 1px solid var(--line); border-radius: 24px; padding: 22px; background: rgba(255,255,255,.84); box-shadow: 0 16px 50px rgba(6,17,15,.035); }
+    .step-number { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: var(--ink); color: #fff; font: 800 13px var(--mono); margin-bottom: 34px; }
+    .step h4 { margin: 0 0 8px; font-size: 20px; letter-spacing: -.04em; }
+    .step p { margin: 0; color: var(--muted); line-height: 1.58; font-size: 14px; }
+
+    .final-cta { margin: 46px 0 70px; border: 1px solid var(--line); border-radius: 34px; padding: clamp(26px, 5vw, 52px); background: linear-gradient(135deg, #06110f, #08382e); color: #fff; overflow: hidden; position: relative; }
+    .final-cta::after { content: ""; position: absolute; inset: -40%; background: repeating-linear-gradient(120deg, transparent 0 10px, rgba(22,199,215,.16) 10px 12px); transform: rotate(7deg); }
+    .final-cta > * { position: relative; z-index: 1; }
+    .final-cta .kicker, .final-cta p { color: rgba(255,255,255,.68); }
+    .final-cta h2 { color: #fff; max-width: 780px; }
+    .final-cta .btn-primary { background: #fff; color: var(--ink); }
+    footer { border-top: 1px solid var(--line); padding: 28px 0 42px; color: var(--muted); font-size: 13px; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hero-grid, .featured-card { grid-template-columns: 1fr; }
+      .hero { padding-top: 56px; }
+      .thumb { min-height: 300px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .stats, .library-grid, .workflow { grid-template-columns: 1fr; }
+      .section-head { align-items: start; flex-direction: column; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 28px, 1180px); }
+      .repo-link { display: none; }
+      h1 { font-size: clamp(44px, 16vw, 72px); }
+      .hero-panel { border-radius: 24px; padding: 12px; }
+      .terminal-card { border-radius: 18px; min-height: 300px; }
+      .meta-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <main>
-    <div class="eyebrow"><span class="dot"></span> martagent.de / Hermes Preview Studio</div>
-    <h1>Saubere, dauerhafte Previews statt Localhost.</h1>
-    <p>Ein zentraler Ort für Website-Entwürfe, Shader-Prototypen, Agent-Workspaces und Kundendemos. Jede Preview bekommt einen stabilen Link unter <strong>preview.martagent.de</strong>.</p>
-    <div class="grid">
-      <a class="card" href="/previews/ai-sdk-agents/">
-        <div class="icon">✦</div>
-        <h2>AI SDK Agents Redesign</h2>
-        <p>Cult-UI-inspirierter Dithering-Hero, cleanes Designsystem, moderne Buttons und konsistente Iconography.</p>
-        <div class="meta"><span class="pill">HTML</span><span class="pill">Shader</span><span class="pill">Landingpage</span></div>
-      </a>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="./" aria-label="Martagent Preview Studio Home"><span class="brand-mark"><span>M</span></span><span>Martagent Preview Studio</span></a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="#featured">Featured</a>
+        <a href="#library">Library</a>
+        <a href="#workflow">Workflow</a>
+      </div>
+      <a class="repo-link" href="https://github.com/milopraetzel/hermes-previews">GitHub Repo</a>
     </div>
+  </nav>
+
+  <main>
+    <header class="hero wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow"><span class="pulse"></span> PUBLIC REVIEW ENVIRONMENT</div>
+          <h1>Dauerhafte Previews für Agenten-Interfaces.</h1>
+          <p class="lead">Ein kuratiertes Studio für <strong>AI-Agent-Interfaces</strong>, Automationsportale, Landingpages und Kunden-Demos — mit stabilen Links statt Localhost-Screenshots.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#featured">Latest Preview ansehen →</a>
+            <a class="btn btn-secondary" href="https://github.com/milopraetzel/hermes-previews">Repository öffnen</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Preview Studio Status">
+          <div class="terminal-card">
+            <div class="terminal-top"><span>martagent.preview/studio</span><span class="signal"><span></span><span></span><span></span></span></div>
+            <div class="orb" aria-hidden="true"></div>
+            <div class="mini-stack">
+              <strong>Review pipeline</strong>
+              <div class="mini-row"><span>Prototype</span><span>HTML/CSS</span></div>
+              <div class="mini-row"><span>Review</span><span>GitHub Pages</span></div>
+              <div class="mini-row"><span>Deploy</span><span>Custom Domain später</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="stats" aria-label="Preview Studio Kennzahlen">
+        <div class="stat"><b>1</b><span>Live Preview im Studio</span></div>
+        <div class="stat"><b>HTTP 200</b><span>GitHub Pages verifiziert</span></div>
+        <div class="stat"><b>0€</b><span>Keine Cloudflare/Hostinger-Kosten</span></div>
+      </div>
+    </header>
+
+    <section id="featured" class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Featured Preview</div>
+          <h2>Aktuelle Demo</h2>
+        </div>
+        <p class="section-copy">Screenshot-first, mit Status, Typ, Stack und klarer Aktion. So wird aus einer Linkliste ein kleines Preview-Produkt.</p>
+      </div>
+
+      <article class="featured-card">
+        <a class="thumb" href="./previews/ai-sdk-agents/" aria-label="AI SDK Agents Redesign öffnen">
+          <img src="./assets/thumb-ai-sdk-agents.png" alt="Screenshot der AI SDK Agents Preview mit Dither-Hero und Landingpage-Layout" />
+        </a>
+        <div class="featured-body">
+          <div>
+            <div class="status-row">
+              <span class="badge live">Live</span>
+              <span class="badge">Agent Interface</span>
+              <span class="badge">Landingpage</span>
+            </div>
+            <h3 style="margin-top:18px">AI SDK Agents Redesign</h3>
+            <p>Cult-UI-inspirierter Dithering-Hero, Vercel-artige Typografie, moderne Buttons und konsistente Iconography für ein copy-ready Agenten-Interface.</p>
+          </div>
+          <div>
+            <div class="meta-grid">
+              <div class="meta-box"><small>Status</small><span>Live Review</span></div>
+              <div class="meta-box"><small>Updated</small><span>May 2026</span></div>
+              <div class="meta-box"><small>Stack</small><span>Static HTML</span></div>
+              <div class="meta-box"><small>Effect</small><span>Dither Shader</span></div>
+            </div>
+            <div class="actions" style="margin-top:20px">
+              <a class="btn btn-primary" href="./previews/ai-sdk-agents/">Preview öffnen →</a>
+              <a class="btn btn-secondary" href="https://github.com/milopraetzel/hermes-previews/tree/main/previews/ai-sdk-agents">Quellcode</a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="library" class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Library</div>
+          <h2>Preview-Kategorien</h2>
+        </div>
+        <div class="filters" aria-label="Kategorien">
+          <span class="filter active">All</span>
+          <span class="filter">Agents</span>
+          <span class="filter">Landingpages</span>
+          <span class="filter">Dashboards</span>
+          <span class="filter">Experiments</span>
+        </div>
+      </div>
+      <div class="library-grid">
+        <a class="library-card" href="./previews/ai-sdk-agents/">
+          <span class="badge live">Live</span>
+          <h4>AI SDK Agents</h4>
+          <p>Agenten-Landingpage mit sauberem Designsystem und starkem visuellen Signature-Effekt.</p>
+        </a>
+        <div class="empty-card">
+          <span class="badge">Next</span>
+          <h4>Client Portal Demo</h4>
+          <p>Platzhalter für spätere Kundenportale, Dify-Agenten und Automations-Dashboards.</p>
+        </div>
+        <div class="empty-card">
+          <span class="badge">Queued</span>
+          <h4>Automation Dashboard</h4>
+          <p>Ein Ort für operative Proof-of-Concepts: Status, Logs, Actions und Review-Flows.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflow" class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Workflow</div>
+          <h2>Prototype → Review → Deploy</h2>
+        </div>
+        <p class="section-copy">GitHub Pages bleibt die kostenlose Vorschau-Ebene. Wenn daraus ein echtes Deployment wird, kümmern wir uns separat um Domain, Hosting, Schutz und Kostenfreigabe.</p>
+      </div>
+      <div class="workflow">
+        <div class="step"><div class="step-number">01</div><h4>Prototype</h4><p>Interfaces, Landingpages und Experimente entstehen als schnelle statische Artefakte mit echten Texten und klarer Designrichtung.</p></div>
+        <div class="step"><div class="step-number">02</div><h4>Review</h4><p>Jede Demo bekommt einen stabilen öffentlichen Link für Feedback, Screenshots und iterative Verbesserung.</p></div>
+        <div class="step"><div class="step-number">03</div><h4>Deploy</h4><p>Freigegebene Versionen wandern später auf Custom Domain, Cloudflare, Hostinger oder Kunden-Infrastruktur — erst nach Kostenwarnung.</p></div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="final-cta">
+        <div class="kicker">No surprise billing</div>
+        <h2>Dieses Studio bleibt die kostenlose Review-Ebene, bis ein echtes Deployment entschieden ist.</h2>
+        <p class="section-copy" style="margin-top:16px">Cloudflare und Hostinger bleiben pausiert. Für alles, was Kosten verursachen könnte, wird vorher explizit freigegeben.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="./previews/ai-sdk-agents/">Live Preview öffnen →</a>
+          <a class="btn btn-secondary" href="https://github.com/milopraetzel/hermes-previews">GitHub Repo</a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Built by Martagent · Public GitHub Pages preview environment</span>
+      <span>Custom domains and paid resources only after explicit approval.</span>
+    </div>
+  </footer>
 </body>
 </html>
